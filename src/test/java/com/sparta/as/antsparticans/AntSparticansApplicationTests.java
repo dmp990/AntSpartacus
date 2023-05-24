@@ -1,10 +1,10 @@
-package com.sparta.as.antspartacus;
+package com.sparta.as.antsparticans;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AntSpartacusApplicationTests {
+class AntSparticansApplicationTests {
 
 	@Test
 	void contextLoads() {
