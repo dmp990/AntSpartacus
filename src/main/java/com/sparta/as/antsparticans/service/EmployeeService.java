@@ -6,6 +6,7 @@ import com.sparta.as.antsparticans.model.dtos.EmployeeDTO;
 import com.sparta.as.antsparticans.model.repositories.DepartmentDTORepository;
 import com.sparta.as.antsparticans.model.repositories.DeptEmpDTORepository;
 import com.sparta.as.antsparticans.model.repositories.EmployeeDTORepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,19 +40,26 @@ public class EmployeeService {
         }
     }
 
-    public ArrayList<EmployeeDTO> findEmployeesWhoWorkedInDepartmentOnAGivenDate(String deptName, LocalDate date) {
+    public List<EmployeeDTO> findEmployeesWhoWorkedInDepartmentOnAGivenDate(String deptName, LocalDate date) {
         DeptEmpService deptEmpService = new DeptEmpService(departmentDTORepository, deptEmpDTORepository);
 
         List<DeptEmpDTO> listOfDeptEmpsWorkingInADepartmentOnAGivenDate =  deptEmpService.getListOfDeptEmpsWorkingInADepartmentOnAGivenDate(deptName, date);
 
-        ArrayList<EmployeeDTO> employeesWorkingInGivenDepartmentOnGivenDay = new ArrayList<>();
+        List<Integer> listOfEmployeeIdsWorkingInADepartmentOnAGivenDate = extractEmployeeIdsFromListOfDeptEmpDTOs(listOfDeptEmpsWorkingInADepartmentOnAGivenDate);
 
-        for (var each : listOfDeptEmpsWorkingInADepartmentOnAGivenDate) {
-            EmployeeDTO employeeDTO = employeeDTORepository.findEmployeeDTOById(each.getId().getEmpNo());
-            employeesWorkingInGivenDepartmentOnGivenDay.add(employeeDTO);
-        }
+        List<EmployeeDTO> listOfAllEmployees = employeeDTORepository.getAllEmployees();
+
+        List<EmployeeDTO> employeesWorkingInGivenDepartmentOnGivenDay = listOfAllEmployees.stream().filter(employeeDTO -> listOfEmployeeIdsWorkingInADepartmentOnAGivenDate.contains(employeeDTO.getId())).toList();
 
         return employeesWorkingInGivenDepartmentOnGivenDay;
+    }
+
+    private static ArrayList<Integer> extractEmployeeIdsFromListOfDeptEmpDTOs(List<DeptEmpDTO> listOfDeptEmpDTOs) {
+        ArrayList<Integer> listOfEmpIds = new ArrayList<>();
+        for (var eachDeptEmpDTO: listOfDeptEmpDTOs) {
+            listOfEmpIds.add(eachDeptEmpDTO.getId().getEmpNo());
+        }
+        return listOfEmpIds;
     }
 
 
