@@ -36,4 +36,11 @@ public class DepartmentDTO {
         this.deptName = deptName;
     }
 
+    @Override
+    public String toString() {
+        return "DepartmentDTO{" +
+                "deptNo='" + deptNo + '\'' +
+                ", deptName='" + deptName + '\'' +
+                '}';
+    }
 }

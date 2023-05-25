@@ -10,7 +10,5 @@ import java.util.List;
 
 public interface DeptEmpDTORepository extends JpaRepository<DeptEmpDTO, DeptEmpDTOId> {
 
-    //List<DeptEmpDTO> findByFromDateIsBeforeAndToDateAfterAndDeptNo(LocalDate beforeDate, LocalDate afterDate, DepartmentDTO dept);
-
     List<DeptEmpDTO> findByDeptNo(DepartmentDTO dept);
 }

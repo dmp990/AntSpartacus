@@ -18,4 +18,8 @@ public class Utils {
     public static boolean isDateWithin(LocalDate dateToCheck, LocalDate beginDate, LocalDate endDate) {
         return (beginDate.isBefore(dateToCheck) && endDate.isAfter(dateToCheck)) || (dateToCheck.isEqual(beginDate) || dateToCheck.isEqual(endDate));
     }
+
+    public static boolean isDateRangeWithin(LocalDate startDate, LocalDate endDate, LocalDate fromDate, LocalDate toDate) {
+        return (startDate.isAfter(fromDate) && endDate.isBefore(toDate)) || (startDate.isEqual(fromDate) && endDate.isEqual(endDate));
+    }
 }
