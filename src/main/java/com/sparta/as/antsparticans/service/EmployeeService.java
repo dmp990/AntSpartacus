@@ -6,12 +6,11 @@ import com.sparta.as.antsparticans.model.dtos.EmployeeDTO;
 import com.sparta.as.antsparticans.model.repositories.DepartmentDTORepository;
 import com.sparta.as.antsparticans.model.repositories.DeptEmpDTORepository;
 import com.sparta.as.antsparticans.model.repositories.EmployeeDTORepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.sparta.as.antsparticans.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +44,7 @@ public class EmployeeService {
 
         List<DeptEmpDTO> listOfDeptEmpsWorkingInADepartmentOnAGivenDate =  deptEmpService.getListOfDeptEmpsWorkingInADepartmentOnAGivenDate(deptName, date);
 
-        List<Integer> listOfEmployeeIdsWorkingInADepartmentOnAGivenDate = extractEmployeeIdsFromListOfDeptEmpDTOs(listOfDeptEmpsWorkingInADepartmentOnAGivenDate);
+        List<Integer> listOfEmployeeIdsWorkingInADepartmentOnAGivenDate = Utils.extractEmployeeIdsFromListOfDeptEmpDTOs(listOfDeptEmpsWorkingInADepartmentOnAGivenDate);
 
         List<EmployeeDTO> listOfAllEmployees = employeeDTORepository.getAllEmployees();
 
@@ -54,13 +53,6 @@ public class EmployeeService {
         return employeesWorkingInGivenDepartmentOnGivenDay;
     }
 
-    private static ArrayList<Integer> extractEmployeeIdsFromListOfDeptEmpDTOs(List<DeptEmpDTO> listOfDeptEmpDTOs) {
-        ArrayList<Integer> listOfEmpIds = new ArrayList<>();
-        for (var eachDeptEmpDTO: listOfDeptEmpDTOs) {
-            listOfEmpIds.add(eachDeptEmpDTO.getId().getEmpNo());
-        }
-        return listOfEmpIds;
-    }
 
 
 

@@ -38,6 +38,9 @@ public class EmployeeServiceTests {
     @Test
     @DisplayName("Check if findEmployeesWhoWorkedInDepartment")
     void checkFindEmployeesWhoWorkedInDepartment() {
-        System.out.println(employeeService.findEmployeesWhoWorkedInDepartmentOnAGivenDate("Marketing", LocalDate.parse("2005-10-10")).size() + " <<<");
+        double st = System.nanoTime();
+        List<EmployeeDTO> list = employeeService.findEmployeesWhoWorkedInDepartmentOnAGivenDate("Marketing", LocalDate.parse("2005-10-10"));
+        double en = System.nanoTime();
+        System.out.println(list.size() + " fetched in: " + ((en-st) / 1_000_000) + " ms.");
     }
 }

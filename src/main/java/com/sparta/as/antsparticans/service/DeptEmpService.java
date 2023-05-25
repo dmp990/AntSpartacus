@@ -4,7 +4,7 @@ import com.sparta.as.antsparticans.model.dtos.DepartmentDTO;
 import com.sparta.as.antsparticans.model.dtos.DeptEmpDTO;
 import com.sparta.as.antsparticans.model.repositories.DepartmentDTORepository;
 import com.sparta.as.antsparticans.model.repositories.DeptEmpDTORepository;
-import com.sparta.as.antsparticans.utils.DateValidator;
+import com.sparta.as.antsparticans.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class DeptEmpService {
 
         // employees who have worked in given department
         return array.stream().filter(deptEmpDTO ->
-                DateValidator.isDateWithin(date, deptEmpDTO.getFromDate(), deptEmpDTO.getToDate())
+                Utils.isDateWithin(date, deptEmpDTO.getFromDate(), deptEmpDTO.getToDate())
         ).toList();
     }
 
