@@ -2,14 +2,18 @@ package com.sparta.as.antsparticans.service;
 
 import com.sparta.as.antsparticans.model.dtos.DeptEmpDTO;
 import com.sparta.as.antsparticans.model.dtos.SalaryDTO;
+import com.sparta.as.antsparticans.model.dtos.TitleDTO;
 import com.sparta.as.antsparticans.model.repositories.DepartmentDTORepository;
 import com.sparta.as.antsparticans.model.repositories.DeptEmpDTORepository;
 import com.sparta.as.antsparticans.model.repositories.SalaryDTORepository;
+import com.sparta.as.antsparticans.model.repositories.TitleDTORepository;
 import com.sparta.as.antsparticans.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,11 +25,14 @@ public class SalaryService {
 
     private final SalaryDTORepository salaryDTORepository;
 
+    private final TitleDTORepository titleDTORepository;
+
     @Autowired
-    public SalaryService(DeptEmpDTORepository deptEmpDTORepository, DepartmentDTORepository departmentDTORepository, SalaryDTORepository salaryDTORepository) {
+    public SalaryService(DeptEmpDTORepository deptEmpDTORepository, DepartmentDTORepository departmentDTORepository, SalaryDTORepository salaryDTORepository, TitleDTORepository titleDTORepository) {
         this.deptEmpDTORepository = deptEmpDTORepository;
         this.departmentDTORepository = departmentDTORepository;
         this.salaryDTORepository = salaryDTORepository;
+        this.titleDTORepository = titleDTORepository;
     }
 
     public double getAverageSalaryForADepartmentOnAGivenDate(String deptName, LocalDate date) {
@@ -45,5 +52,28 @@ public class SalaryService {
             sum += salariesOfEmployeesWorkingInGivenDepartmentOnGivenDate.get(i).getSalary();
         }
         return sum / i;
+    }
+
+    /*
+    Given a job title name, what is the range of salary values within a given year?
+     */
+
+    public String getRangeOfSalaryWithinAYearGivenAJobTitle(String jobTitle, LocalDate beginDate, LocalDate endDate) {
+
+        TitleService titleService = new TitleService(titleDTORepository);
+
+        List<TitleDTO> filteredTitleDtos = titleService.getAllTitlesDtosByTitleWorkingDuringAGivenRange(jobTitle, beginDate, endDate);
+
+        List<Integer> listOfDesiredEmployeeNos = Utils.extractEmployeeIdsFromListOfTitleDTOs(filteredTitleDtos);
+
+        List<SalaryDTO> listOfAllSalaries = salaryDTORepository.getAllSalaries();
+
+        List<SalaryDTO> listOfDesiredSalaries = new java.util.ArrayList<>(listOfAllSalaries.stream().filter(salaryDTO ->
+                listOfDesiredEmployeeNos.contains(salaryDTO.getEmpNo().getId())
+        ).toList());
+
+        Collections.sort(listOfDesiredSalaries);
+
+        return listOfDesiredSalaries.size() > 0 ? "Min: " + listOfDesiredSalaries.get(0).getSalary() + ", Max: " + listOfDesiredSalaries.get(listOfDesiredSalaries.size() - 1).getSalary() : "No Salaries found for the given parameters";
     }
 }

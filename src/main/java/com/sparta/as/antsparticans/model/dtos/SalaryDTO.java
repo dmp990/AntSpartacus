@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "salaries")
-public class SalaryDTO {
+public class SalaryDTO implements Comparable<SalaryDTO> {
     @EmbeddedId
     private SalaryDTOId id;
 
@@ -59,4 +59,8 @@ public class SalaryDTO {
         this.toDate = toDate;
     }
 
+    @Override
+    public int compareTo(SalaryDTO o) {
+        return this.getSalary().compareTo(o.getSalary());
+    }
 }

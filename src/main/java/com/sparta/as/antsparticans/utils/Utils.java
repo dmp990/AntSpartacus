@@ -1,6 +1,7 @@
 package com.sparta.as.antsparticans.utils;
 
 import com.sparta.as.antsparticans.model.dtos.DeptEmpDTO;
+import com.sparta.as.antsparticans.model.dtos.TitleDTO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +12,14 @@ public class Utils {
         ArrayList<Integer> listOfEmpIds = new ArrayList<>();
         for (var eachDeptEmpDTO: listOfDeptEmpDTOs) {
             listOfEmpIds.add(eachDeptEmpDTO.getId().getEmpNo());
+        }
+        return listOfEmpIds;
+    }
+
+    public static ArrayList<Integer> extractEmployeeIdsFromListOfTitleDTOs(List<TitleDTO> titleDTOS) {
+        ArrayList<Integer> listOfEmpIds = new ArrayList<>();
+        for (var eachTitleDto: titleDTOS) {
+            listOfEmpIds.add(eachTitleDto.getEmpNo().getId());
         }
         return listOfEmpIds;
     }
