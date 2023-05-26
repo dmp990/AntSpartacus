@@ -16,8 +16,8 @@ public interface SalaryDTORepository extends JpaRepository<SalaryDTO, SalaryDTOI
 
     // 2000 - 2001
 
-    @Query(value = "SELECT MIN(salary), MAX(salary) FROM employees.salaries JOIN employees.titles ON salaries.emp_no = titles.emp_no WHERE titles.title =:title AND salaries.from_date >=:startDate AND salaries.to_date <=:endDate", nativeQuery = true)
-    List<SalaryDTO> getAllSalariesWithinADateRangeForAGivenTitle(String title, LocalDate startDate, LocalDate endDate);
+    //@Query(value = "SELECT MIN(salary), MAX(salary) FROM employees.salaries JOIN employees.titles ON employees.salaries.emp_no = employees.titles.emp_no WHERE titles.title=:title AND salaries.from_date>=:startDate AND salaries.to_date<=:endDate", nativeQuery = true)
+    //List<SalaryDTO> getAllSalariesWithinADateRangeForAGivenTitle(String title, LocalDate startDate, LocalDate endDate);
 
 
 

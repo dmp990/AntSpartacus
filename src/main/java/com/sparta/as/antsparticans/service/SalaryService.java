@@ -59,33 +59,30 @@ public class SalaryService {
      */
 
     public String getRangeOfSalaryWithinAYearGivenAJobTitle(String jobTitle, LocalDate beginDate, LocalDate endDate) {
-        List<SalaryDTO> salaryDTOS = salaryDTORepository.getAllSalariesWithinADateRangeForAGivenTitle(jobTitle, beginDate, endDate);
+        /*List<SalaryDTO> salaryDTOS = salaryDTORepository.getAllSalariesWithinADateRangeForAGivenTitle(jobTitle, beginDate, endDate);
 
         Collections.sort(salaryDTOS);
 
-        return salaryDTOS.size() > 0 ? "Min: " + salaryDTOS.get(0).getSalary() + ", Max: " + salaryDTOS.get(salaryDTOS.size() - 1).getSalary() : "No Salaries found for the given parameters";
+        return salaryDTOS.size() > 0 ? "Min: " + salaryDTOS.get(0).getSalary() + ", Max: " + salaryDTOS.get(salaryDTOS.size() - 1).getSalary() : "No Salaries found for the given parameters";*/
 
 
-    /*
         TitleService titleService = new TitleService(titleDTORepository);
 
         List<TitleDTO> filteredTitleDtos = titleService.getAllTitlesDtosByTitleWorkingDuringAGivenRange(jobTitle, beginDate, endDate);
 
         List<Integer> listOfDesiredEmployeeNos = Utils.extractEmployeeIdsFromListOfTitleDTOs(filteredTitleDtos);
 
-        List<SalaryDTO> listOfAllSalaries = salaryDTORepository.getAllSalariesWithinARange(beginDate, endDate);
+        List<SalaryDTO> listOfAllSalaries = salaryDTORepository.getAllSalaries();
 
         List<SalaryDTO> listOfDesiredSalaries = new java.util.ArrayList<>(listOfAllSalaries.stream().filter(salaryDTO ->
-                listOfDesiredEmployeeNos.contains(salaryDTO.getEmpNo().getId())
+                listOfDesiredEmployeeNos.contains(salaryDTO.getEmpNo().getId()) && Utils.isDateRangeWithin(beginDate, endDate, salaryDTO.getId().getFromDate(), salaryDTO.getToDate())
         ).toList());
 
         Collections.sort(listOfDesiredSalaries);
 
-        System.out.println(listOfDesiredSalaries.get(0).getEmpNo().getId() + " <<<");
-
         return listOfDesiredSalaries.size() > 0 ? "Min: " + listOfDesiredSalaries.get(0).getSalary() + ", Max: " + listOfDesiredSalaries.get(listOfDesiredSalaries.size() - 1).getSalary() : "No Salaries found for the given parameters";
 
-        */
+
     }
 
 }
