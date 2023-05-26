@@ -1,28 +1,8 @@
-### Week 5 - JPA/Hibernate
+# AntSparticans
 
-### General Requirements
+## Spring Boot & JPA/Hibernate Project
 
-All projects:
-
-- Must be run as Scrum projects
-- Must apply SOLID & OO principles
-- Must use the MVC pattern where there is a user interface
-- Should use well-known design patterns where appropriate
-- Must include comprehensive ```JUnit``` testing or equivalent
-- Should begin with the creation of tests, in line with a test-driven development approach
-- Must use logging or equivalent
-- Must implement appropriate exception handling
-- Must be hosted on GitHub and thoroughly documented, through a `README.md` file
-
-#### Purpose
-
-In addition to the general goals of projects, this project will give trainees an opportunity to:
-
-- Explore JPA/Hibernate
-- Use Spring Boot Testing
-- Implement DAO and DTO classes as appropriate
-
-#### Requirements
+### Requirements
 
 - Develop JPA entities and repositories for all 6 tables in the employees sample database in MySQL:
   - `departments`
@@ -45,6 +25,8 @@ In addition to the general goals of projects, this project will give trainees an
 - Include the result of your testing in the ```README.md``` file for the project on GitHub
 - Include code coverage data for all JPA classes, with explanations for any low coverage levels, in the `README.md`
 
-#### Groups
+### Team Members
 
-Please let your trainer know who will be acting as Scrum Master and Git Manager for this project.
+* [Abdirizak](https://github.com/rizak97/)
+* [Asad](https://github.com/dmp990/)
+* [Damien](https://github.com/Damog83/)
