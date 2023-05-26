@@ -39,12 +39,11 @@ public class DeptEmpService {
 
     public List<DeptEmpDTO> getListOfDeptEmpsWorkingInADepartmentOnAGivenDateRange(String deptName, LocalDate beginDate, LocalDate endDate) {
         /*
-        Returns the list of dept-emp who have worked in "deptName" on "date"
+        Returns the list of dept-emp who have worked in "deptName" during "beginDate-endDate"
          */
         DepartmentDTO dept = departmentDTORepository.findByDeptName(deptName);
         List<DeptEmpDTO> array = deptEmpDTORepository.findByDeptNo(dept);
 
-        // employees who have worked in given department
         return array.stream().filter(deptEmpDTO ->
                 Utils.isDateRangeWithin(beginDate, endDate, deptEmpDTO.getFromDate(), deptEmpDTO.getToDate())
         ).toList();

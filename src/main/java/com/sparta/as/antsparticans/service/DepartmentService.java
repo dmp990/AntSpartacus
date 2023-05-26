@@ -27,6 +27,10 @@ public class DepartmentService {
 
         DeptEmpService deptEmpService = new DeptEmpService(departmentDTORepository, deptEmpDTORepository);
 
+        return createHashMapWithSummaryOfDepartmentSize(listOfAllDepartments, deptEmpService, startYear, endYear);
+    }
+
+    private static HashMap<String, Integer> createHashMapWithSummaryOfDepartmentSize(List<DepartmentDTO> listOfAllDepartments, DeptEmpService deptEmpService, LocalDate startYear, LocalDate endYear) {
         HashMap<String, Integer> summaryOfDepartmentSizes = new HashMap<>();
 
         for (var each : listOfAllDepartments) {
@@ -35,6 +39,7 @@ public class DepartmentService {
         }
 
         return summaryOfDepartmentSizes;
+
     }
 }
 
