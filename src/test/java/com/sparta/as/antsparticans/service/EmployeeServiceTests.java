@@ -43,4 +43,10 @@ public class EmployeeServiceTests {
         double en = System.nanoTime();
         System.out.println(list.size() + " fetched in: " + ((en-st) / 1_000_000) + " ms.");
     }
+
+    @Test
+    void checksomething() {
+        List<EmployeeDTO> list = employeeService.findsimilar();
+        System.out.println(list.size());
+    }
 }
