@@ -30,7 +30,7 @@ public class EmployeesController {
     @GetMapping("/employees")
     public List<EmployeeDTO> getEmployeeByLastName(@RequestParam(name = "last_name")String name) throws EmployeeNotFoundException {
         List<EmployeeDTO> employeesByLastName = employeeDTORepository.findEmployeeDTOByLastName(name).get();
-        if(employeesByLastName.size() == 0) throw new EmployeeNotFoundException(name);
+        if(employeesByLastName.isEmpty()) throw new EmployeeNotFoundException(name);
         return employeesByLastName;
     }
 
