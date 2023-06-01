@@ -95,13 +95,13 @@ public class EmployeesController {
         return e.getId() != null && e.getGender() != null && e.getFirstName() != null && e.getLastName() != null && e.getBirthDate() != null && e.getHireDate() != null && employeeDTORepository.findById(e.getId()).isEmpty();
     }
 
-    @PutMapping("/employees")
+    @PostMapping("/employees")
     public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employeeDTO) throws EmployeeViolatesConstraintException, EmployeeAlreadyExistsException {
 
         employeesControllerLogger.log(Level.INFO, "Received: " + employeeDTO);
 
         if (canNewEmployeeBeCreated(employeeDTO)) {
-            employeesControllerLogger.log(Level.INFO, "Can be creted");
+            employeesControllerLogger.log(Level.INFO, "Can be created");
             EmployeeDTO toBeReturned = null;
 
             employeesControllerLogger.log(Level.INFO, "Attempting to create: " + employeeDTO);
