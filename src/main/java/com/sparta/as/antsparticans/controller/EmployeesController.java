@@ -1,6 +1,7 @@
 package com.sparta.as.antsparticans.controller;
 
 import com.sparta.as.antsparticans.exceptions.EmployeeNotFoundException;
+import com.sparta.as.antsparticans.logging.FileHandlerConfig;
 import com.sparta.as.antsparticans.model.dtos.EmployeeDTO;
 import com.sparta.as.antsparticans.model.repositories.EmployeeDTORepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static com.sparta.as.antsparticans.logging.FileHandlerConfig.getFileHandler;
 
 @RestController
 public class EmployeesController {
 
     EmployeeDTORepository employeeDTORepository;
 
+    private static final Logger employeesControllerLogger = Logger.getLogger(EmployeesController.class.getName());
+
+    static {
+        employeesControllerLogger.setUseParentHandlers(false);
+        employeesControllerLogger.setLevel(Level.ALL);
+        employeesControllerLogger.addHandler(FileHandlerConfig.getFileHandler());
+    }
+
+    /*
+    departmentsDAOLogger.log(Level.FINE, "DepartmentsDAO created");
+     */
     @Autowired
     public EmployeesController(EmployeeDTORepository employeeDTORepository) {
         this.employeeDTORepository = employeeDTORepository;
+        employeesControllerLogger.log(Level.INFO, "Employees controller constructor employeeDTO dependency created");
     }
 
     @GetMapping("/employees/{id}")
