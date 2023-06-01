@@ -10,7 +10,7 @@ public class FileHandlerConfig {
     public static FileHandler getFileHandler() {
         FileHandler fileHandler = null;
         try {
-            fileHandler = new FileHandler("src/main/resources.log", true);
+            fileHandler = new FileHandler("src/main/resources.log", false);
             fileHandler.setLevel(Level.ALL);
             fileHandler.setFormatter(new SimpleFormatter());
         } catch (IllegalArgumentException | SecurityException | IOException e) {
