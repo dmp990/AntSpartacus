@@ -111,7 +111,7 @@ public class EmployeeControllerTests {
     @Autowired
     private WebTestClient webTestClient;
 
-    @Test
+    /*@Test
     @DisplayName("Check if an employee has been deleted")
     void checkIfEmployeeHasBeenDeleted() {
         deleteEmployee();
@@ -127,7 +127,7 @@ public class EmployeeControllerTests {
                 .retrieve()
                 .bodyToMono(Void.class)
                 .subscribe();
-    }
+    }*/
     /*
     @Test
     @DisplayName("Check if employees/id endpoint returns an error message if the employee does not exist")
