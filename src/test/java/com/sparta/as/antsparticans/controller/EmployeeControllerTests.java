@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebFluxTest
 public class EmployeeControllerTests {
 
 
@@ -107,9 +106,6 @@ public class EmployeeControllerTests {
 
         Assertions.assertEquals(500002, response.block().getId());
     }
-
-    @Autowired
-    private WebTestClient webTestClient;
 
     /*@Test
     @DisplayName("Check if an employee has been deleted")
