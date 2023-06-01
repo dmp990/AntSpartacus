@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class EmployeeLastNameViolatesConstraintAdvice {
+public class EmployeeViolatesConstraintAdvice {
 
     @ResponseBody
-    @ExceptionHandler(EmployeeLastNameViolatesConstraintException.class)
+    @ExceptionHandler(EmployeeViolatesConstraintException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String employeeNotFoundHandler(EmployeeLastNameViolatesConstraintException e) {
+    String employeeNotFoundHandler(EmployeeViolatesConstraintException e) {
         return e.getMessage();
     }
 }
