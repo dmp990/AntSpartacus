@@ -1,4 +1,4 @@
-# AntSparticans
+# LaferrAPI
 
 ## Spring Boot & JPA/Hibernate Project
 
