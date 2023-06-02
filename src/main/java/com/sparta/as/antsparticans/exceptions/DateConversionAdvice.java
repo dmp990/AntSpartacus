@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class DepartmentNotFoundAdvice {
-
+public class DateConversionAdvice {
     @ResponseBody
-    @ExceptionHandler(DepartmentNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String departmentNotFoundHandler(DepartmentNotFoundException e) {
+    @ExceptionHandler(DateConversionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String dateConversionError(DateConversionException e) {
         return e.getMessage();
     }
 }
