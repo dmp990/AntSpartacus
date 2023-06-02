@@ -1,10 +1,8 @@
 package com.sparta.as.antsparticans.controller;
 
-import com.sparta.as.antsparticans.exceptions.DateConversionException;
-import com.sparta.as.antsparticans.exceptions.EmployeeAlreadyExistsException;
-import com.sparta.as.antsparticans.exceptions.EmployeeViolatesConstraintException;
-import com.sparta.as.antsparticans.exceptions.EmployeeNotFoundException;
+import com.sparta.as.antsparticans.exceptions.*;
 import com.sparta.as.antsparticans.logging.FileHandlerConfig;
+import com.sparta.as.antsparticans.model.dtos.DepartmentDTO;
 import com.sparta.as.antsparticans.model.dtos.EmployeeDTO;
 import com.sparta.as.antsparticans.model.repositories.DepartmentDTORepository;
 import com.sparta.as.antsparticans.model.repositories.DeptEmpDTORepository;
@@ -52,7 +50,7 @@ public class EmployeesController {
     }
 
     @GetMapping("/employees")
-    public List<EmployeeDTO> getEmployees(@RequestParam(name = "last_name") Optional<String> name, @RequestParam(name = "department") Optional<String> department, @RequestParam(name = "date") Optional<String> date) throws EmployeeNotFoundException, DateConversionException {
+    public List<EmployeeDTO> getEmployees(@RequestParam(name = "last_name") Optional<String> name, @RequestParam(name = "department") Optional<String> department, @RequestParam(name = "date") Optional<String> date) throws EmployeeNotFoundException, DateConversionException, DepartmentNotFoundException {
         employeesControllerLogger.log(Level.INFO, "Fetching employee with lastName: " + name + " from the database...");
 
         if (name.isPresent()) {
@@ -66,6 +64,11 @@ public class EmployeesController {
                 givenDate = LocalDate.parse(date.get());
             } catch (Exception e) {
                 throw new DateConversionException(e);
+            }
+            DepartmentDTO departmentDTO = departmentDTORepository.findByDeptName(department.get());
+
+            if (departmentDTO == null) {
+                throw new DepartmentNotFoundException(department.get(), true);
             }
 
             List<EmployeeDTO> employeeDTOList = employeeService.findEmployeesWhoWorkedInDepartmentOnAGivenDate(department.get(), givenDate);
