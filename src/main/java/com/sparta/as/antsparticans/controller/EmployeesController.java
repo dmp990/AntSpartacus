@@ -1,14 +1,19 @@
 package com.sparta.as.antsparticans.controller;
 
+import com.sparta.as.antsparticans.exceptions.DateConversionException;
 import com.sparta.as.antsparticans.exceptions.EmployeeAlreadyExistsException;
 import com.sparta.as.antsparticans.exceptions.EmployeeViolatesConstraintException;
 import com.sparta.as.antsparticans.exceptions.EmployeeNotFoundException;
 import com.sparta.as.antsparticans.logging.FileHandlerConfig;
 import com.sparta.as.antsparticans.model.dtos.EmployeeDTO;
+import com.sparta.as.antsparticans.model.repositories.DepartmentDTORepository;
+import com.sparta.as.antsparticans.model.repositories.DeptEmpDTORepository;
 import com.sparta.as.antsparticans.model.repositories.EmployeeDTORepository;
+import com.sparta.as.antsparticans.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -18,6 +23,8 @@ import java.util.logging.Logger;
 public class EmployeesController {
 
     private EmployeeDTORepository employeeDTORepository;
+    private DeptEmpDTORepository deptEmpDTORepository;
+    private DepartmentDTORepository departmentDTORepository;
 
     private static final Logger employeesControllerLogger = Logger.getLogger(EmployeesController.class.getName());
 
@@ -31,8 +38,10 @@ public class EmployeesController {
     departmentsDAOLogger.log(Level.FINE, "DepartmentsDAO created");
      */
     @Autowired
-    public EmployeesController(EmployeeDTORepository employeeDTORepository) {
+    public EmployeesController(EmployeeDTORepository employeeDTORepository, DeptEmpDTORepository deptEmpDTORepository, DepartmentDTORepository departmentDTORepository) {
         this.employeeDTORepository = employeeDTORepository;
+        this.departmentDTORepository = departmentDTORepository;
+        this.deptEmpDTORepository = deptEmpDTORepository;
         employeesControllerLogger.log(Level.INFO, "Employees controller constructor employeeDTO dependency created");
     }
 
@@ -43,14 +52,30 @@ public class EmployeesController {
     }
 
     @GetMapping("/employees")
-    public List<EmployeeDTO> getEmployeeByLastName(@RequestParam(name = "last_name") Optional<String> name) throws EmployeeNotFoundException {
+    public List<EmployeeDTO> getEmployees(@RequestParam(name = "last_name") Optional<String> name, @RequestParam(name = "department") Optional<String> department, @RequestParam(name = "date") Optional<String> date) throws EmployeeNotFoundException, DateConversionException {
         employeesControllerLogger.log(Level.INFO, "Fetching employee with lastName: " + name + " from the database...");
-        if (!name.isPresent()) {
+
+        if (name.isPresent()) {
+            List<EmployeeDTO> employeesByLastName = employeeDTORepository.findEmployeeDTOByLastName(name.get()).get();
+            if (employeesByLastName.isEmpty()) throw new EmployeeNotFoundException(name.get());
+            return employeesByLastName;
+        } else if (department.isPresent() && date.isPresent()) {
+            EmployeeService employeeService = new EmployeeService(employeeDTORepository, deptEmpDTORepository, departmentDTORepository);
+            LocalDate givenDate = null;
+            try {
+                givenDate = LocalDate.parse(date.get());
+            } catch (Exception e) {
+                throw new DateConversionException(e);
+            }
+
+            List<EmployeeDTO> employeeDTOList = employeeService.findEmployeesWhoWorkedInDepartmentOnAGivenDate(department.get(), givenDate);
+
+            if (employeeDTOList.size() == 0) {
+                throw new EmployeeNotFoundException(department.get(), givenDate);
+            }
+            return employeeDTOList;
+        } else
             return employeeDTORepository.getAllEmployees();
-        }
-        List<EmployeeDTO> employeesByLastName = employeeDTORepository.findEmployeeDTOByLastName(name.get()).get();
-        if (employeesByLastName.isEmpty()) throw new EmployeeNotFoundException(name.get());
-        return employeesByLastName;
     }
 
     @PutMapping("/employees/{id}")
@@ -130,8 +155,8 @@ public class EmployeesController {
             employeesControllerLogger.log(Level.INFO, "Attempting to delete employee with id: " + id + " from the database");
             boolean successfull = false;
             try {
-               employeeDTORepository.deleteById(id);
-               successfull = true;
+                employeeDTORepository.deleteById(id);
+                successfull = true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
