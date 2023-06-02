@@ -19,7 +19,7 @@ public class AntSparticansApplication {
 
 	@Bean
 	public CommandLineRunner runner() {
-		return args -> logger.log(Level.SEVERE, "from main");
+		return args -> logger.log(Level.ALL, "from main");
 	}
 
 }

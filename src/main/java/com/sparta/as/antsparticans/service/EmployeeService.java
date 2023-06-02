@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class EmployeeService {
     public List<EmployeeDTO> findEmployeesWhoWorkedInDepartmentOnAGivenDate(String deptName, LocalDate date) {
         DeptEmpService deptEmpService = new DeptEmpService(departmentDTORepository, deptEmpDTORepository);
 
-        List<DeptEmpDTO> listOfDeptEmpsWorkingInADepartmentOnAGivenDate =  deptEmpService.getListOfDeptEmpsWorkingInADepartmentOnAGivenDate(deptName, date);
+        List<DeptEmpDTO> listOfDeptEmpsWorkingInADepartmentOnAGivenDate = deptEmpService.getListOfDeptEmpsWorkingInADepartmentOnAGivenDate(deptName, date);
 
         List<Integer> listOfEmployeeIdsWorkingInADepartmentOnAGivenDate = Utils.extractEmployeeIdsFromListOfDeptEmpDTOs(listOfDeptEmpsWorkingInADepartmentOnAGivenDate);
 
@@ -53,8 +54,36 @@ public class EmployeeService {
         return employeesWorkingInGivenDepartmentOnGivenDay;
     }
 
+    public List<EmployeeDTO> findsimilar() {
+        System.out.println("getting all employees...");
+        List<EmployeeDTO> list1 = employeeDTORepository.getAllEmployees();
+        System.out.println("fetched");
+        System.out.println("getting all employees...");
+        List<EmployeeDTO> list2 = employeeDTORepository.getAllEmployees();
+        System.out.println("fetched");
 
+        List<EmployeeDTO> similar = new ArrayList<>();
 
+        System.out.println("finding similar");
+        int count = 0;
+        for (int i = 0; i < list1.size(); i++) {
+            for (int j = 0; j < list2.size(); j++) {
+                if (i != j) {
+                    if (list1.get(i).getFirstName().equals(list2.get(j).getFirstName()) && list1.get(i).getLastName().equals(list2.get(j).getLastName())) {
+                        //System.out.println("Comparing: " + list1.get(i).getFirstName() + " " + list1.get(i).getLastName() + " WITH " + list2.get(j).getFirstName() + " " + list2.get(j).getLastName());
+                        //System.out.println("Adding: " + list1.get(i).getFirstName() + " " + list1.get(i).getLastName() + " to the list");
+                        //System.out.println("key1: " + list1.get(i).getId() + " key2: " + list2.get(j).getId());
+                        //similar.add(list1.get(i));
+                        count++;
+                    }
+                }
+            }
+        }
+        System.out.println("found");
+        System.out.println(count + " <<<");
+
+        return similar;
+    }
 
 
 }

@@ -16,7 +16,7 @@ public interface EmployeeDTORepository extends JpaRepository<EmployeeDTO, Intege
 
     EmployeeDTO findEmployeeDTOById(int id);
 
-    @Query(value = "SELECT * FROM employees.employees", nativeQuery = true)
+    @Query(value = "SELECT * FROM employees.employees LIMIT 1000", nativeQuery = true)
     List<EmployeeDTO> getAllEmployees();
 
 }
