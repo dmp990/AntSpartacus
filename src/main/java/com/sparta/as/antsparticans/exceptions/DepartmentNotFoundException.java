@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 public class DepartmentNotFoundException extends Exception {
 
+
     private static final Logger DepartmentNotFoundExceptionLogger = Logger.getLogger(EmployeesController.class.getName());
 
     public DepartmentNotFoundException(String dept_no) {

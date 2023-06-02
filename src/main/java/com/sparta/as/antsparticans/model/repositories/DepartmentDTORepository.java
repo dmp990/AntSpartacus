@@ -13,4 +13,13 @@ public interface DepartmentDTORepository extends JpaRepository<DepartmentDTO, St
 
     @Query(value = "SELECT * FROM employees.departments", nativeQuery = true)
     List<DepartmentDTO> getAllDepartments();
+
+    Optional<DepartmentDTO> getDepartmentByDeptNo(String deptNo);
+
+    Optional<DepartmentDTO> getDepartmentByDeptName(String deptName);
+
+    //void deleteByDeptNo(String deptNo);
+
+//    void delete(Optional<DepartmentDTO> departmentDTO);
+
 }
