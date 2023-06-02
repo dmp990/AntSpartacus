@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,8 +66,24 @@ public class DepartmentController {
         }
     }
 
-//    @PostMapping("/departments")
-//    public DepartmentDTO addDepartment(@RequestBody DepartmentDTO departmentDTO) {
-//        return DepartmentDTO.save(departmentDTO);
+    @PostMapping("/departments")
+    public DepartmentDTO addDepartment(@RequestBody DepartmentDTO departmentDTO) throws DepartmentNameAlreadyExistsException {
+        String newDepartmentName = departmentDTO.getDeptName();
+        Optional<DepartmentDTO> department = departmentDTORepository.getDepartmentByDeptName(newDepartmentName);
+        if(department.isPresent()) {
+            throw new DepartmentNameAlreadyExistsException(departmentDTO.getDeptName());
+        }
+        return departmentDTORepository.save(departmentDTO);
+    }
+
+//    @DeleteMapping("/departments")
+//    public void deleteADepartment(@RequestBody String deptNo) throws DepartmentNotFoundException {
+//        Optional<DepartmentDTO> departmentDTO = departmentDTORepository.getDepartmentByDeptNo(deptNo);
+////        if(departmentDTO.isPresent()) {
+//            departmentDTORepository.delete(departmentDTO);
+////       } else {
+////            throw new DepartmentNotFoundException(deptNo);
+////        }
+//        //return "Department successfully removed";
 //    }
 }

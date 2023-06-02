@@ -20,6 +20,7 @@ public class DepartmentDTO {
     @Column(name = "dept_name", nullable = false, length = 40)
     private String deptName;
 
+
     public String getDeptNo() {
         return deptNo;
     }

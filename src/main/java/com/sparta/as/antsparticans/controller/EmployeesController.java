@@ -30,10 +30,7 @@ public class EmployeesController {
         employeesControllerLogger.addHandler(FileHandlerConfig.getFileHandler());
     }
 
-    /*
-    departmentsDAOLogger.log(Level.FINE, "DepartmentsDAO created");
-     */
-    @Autowired
+        @Autowired
     public EmployeesController(EmployeeDTORepository employeeDTORepository) {
         this.employeeDTORepository = employeeDTORepository;
         employeesControllerLogger.log(Level.INFO, "Employees controller constructor employeeDTO dependency created");
